@@ -45,7 +45,7 @@ Connect-MgGraph -Scopes "DeviceManagementServiceConfig.ReadWrite.All"
 # Import the CSV file
 $profiles = Import-Csv "Profiles.csv"
 
-foreach ($profile in $profiles | select -First 1) {
+foreach ($profile in $profiles) {
     # Create Autopilot profile
     New-AutopilotDeploymentProfile -DisplayName $profile.DisplayName `
         -DeploymentMode $profile.DeploymentMode `
