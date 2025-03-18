@@ -1,0 +1,4 @@
+DisplayName,DeploymentMode,JoinToEntraIDAs,LanguageLocale,ProfileType,ApplyDeviceNameTemplate,AllowPreprovisionedDeployment,IncludedGroups,ExcludedGroups
+North America Profile,UserDriven,azureAD,en-US,windowsPc,NA-%SERIAL%,TRUE,Autopilot-NA,None
+Europe Profile,SelfDeploying,azureAD,en-GB,windowsPc,EU-%SERIAL%,FALSE,Autopilot-EU,TestGroup
+APAC Profile,UserDriven,Hybrid,en-US,windowsPc,APAC-%SERIAL%,TRUE,Autopilot-APAC,None
