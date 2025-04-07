@@ -343,3 +343,35 @@ Assigns the deployment profile "MyProfile" to the groups "Group1" and "Group2".
         }
     }
 }
+
+Function Get-AutopilotDeploymentProfile {
+    <#
+    .SYNOPSIS
+    Retrieves a Windows Autopilot deployment profile by its display name.
+
+    .DESCRIPTION
+    The Get-AutopilotDeploymentProfile function retrieves a Windows Autopilot deployment profile by its display name. 
+    It returns the profile object if found, or throws an error if not found.
+
+    .PARAMETER ProfileName
+    Specifies the name of the deployment profile to retrieve.
+
+    .EXAMPLE
+    Get-AutopilotDeploymentProfile -ProfileName "MyProfile"
+    Retrieves the deployment profile "MyProfile".
+    #>
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ProfileName
+    )
+    $profile = Get-MgBetaDeviceManagementWindowsAutopilotDeploymentProfile -All |
+        Where-Object { $_.DisplayName -eq $ProfileName }
+    if (!$profile) {
+        throw "Deployment profile '$ProfileName' not found."
+    }
+    elseif ($profile.count -gt 1) {
+        throw "More than one profile found with name $ProfileName"
+    }
+    return $profile
+}

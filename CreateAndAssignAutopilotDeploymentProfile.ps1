@@ -34,7 +34,7 @@ This example runs the script to create and assign Autopilot deployment profiles 
 $modules = @("Microsoft.Graph.authentication","Microsoft.Graph.Beta.DeviceManagement.Enrollment")
 foreach ($module in $modules) {
     if (-not(Get-Module -Name $module -ListAvailable)) {
-        Install-Module -Name $module -Force -AllowClobber
+        Install-Module -Name $module -Force -Scope AllUsers
     }
     import-module $module -Force
 }
@@ -46,6 +46,12 @@ Connect-MgGraph -Scopes "DeviceManagementServiceConfig.ReadWrite.All"
 $profiles = Import-Csv "Profiles.csv"
 
 foreach ($profile in $profiles) {
+    #check if the profile already exists
+    $existingProfile = Get-AutopilotDeploymentProfile -ProfileName $profile.DisplayName -ErrorAction SilentlyContinue
+    if ($existingProfile) {
+        Write-Host "Profile $($profile.DisplayName) already exists. Skipping creation."
+        continue
+    }
     # Create Autopilot profile
     New-AutopilotDeploymentProfile -DisplayName $profile.DisplayName `
         -DeploymentMode $profile.DeploymentMode `
